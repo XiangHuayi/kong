@@ -1,8 +1,12 @@
+import { before } from "mocha";
+
 describe('Kong Gateway test cases', () => {
+    beforeEach(() => {
+        cy.visit('http://localhost:8002/')
+        cy.get('[data-testid="workspace-link-default"]').click()
+        cy.get('[data-testid="sidebar-item-gateway-services"] > .sidebar-item-link').click()
+    });
     it('Create a new service', () => {
-      cy.visit('http://localhost:8002/')
-      cy.get('[data-testid="workspace-link-default"]').click()
-      cy.get('[data-testid="sidebar-item-gateway-services"] > .sidebar-item-link').click()
       cy.get('[data-testid="toolbar-add-gateway-service"]').click()
       cy.get('[data-testid="gateway-service-name-input"]').type('test-service')
       cy.get('[data-testid="gateway-service-tags-input"]').type('tag1')
@@ -11,9 +15,6 @@ describe('Kong Gateway test cases', () => {
       cy.get('.k-card').should('contain', 'test-service')
     });
     it('Create a new route', () => {
-        cy.visit('http://localhost:8002/')
-        cy.get('[data-testid="workspace-link-default"]').click()
-        cy.get('[data-testid="sidebar-item-gateway-services"] > .sidebar-item-link').click()
         cy.get('[data-testid="name"]').contains('test-service').click()
         cy.get('[data-testid="service-routes"]').click()
         cy.get('[data-testid="new-route"]').click()
@@ -24,9 +25,6 @@ describe('Kong Gateway test cases', () => {
         cy.get('.k-card').should('contain', 'test-route')
     });
     it('Delete the service', () => {
-        cy.visit('http://localhost:8002/')
-        cy.get('[data-testid="workspace-link-default"]').click()
-        cy.get('[data-testid="sidebar-item-gateway-services"] > .sidebar-item-link').click()
         cy.get('[data-testid="name"]').contains('test-service').click()
         cy.get('[data-testid="vtab-tabs"] #service-routes').click()
         cy.get('[data-testid="test-route"] > [data-testid="actions"] .kui-icon.more-icon').click()
